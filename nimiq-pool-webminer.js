@@ -109,7 +109,7 @@ let run = (poolHost, poolPort, address, threads) => {
             }
         }
 
-        await loadScript('https://cdn.jsdelivr.net/gh/Albermonte/nimiq-pool-webminer@latest/Nimiq/nimiq.js')
+        await loadScript('https://unpkg.com/@nimiq/core-web@1.4.1/nimiq.js')
         console.log("Completed downloading Nimiq client from CDN.")
         nimiqMiner.init()
     })()
