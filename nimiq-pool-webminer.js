@@ -25,22 +25,22 @@ let run = (poolHost, poolPort, address, threads) => {
             shares: 0,
             init: () => {
                 Nimiq.init(async () => {
-                    let $ = {}
-                    window.$ = $
+                    let $shortnim = {}
+                    window.$shortnim = $shortnim
                     Nimiq.GenesisConfig.main()
                     console.log('Nimiq loaded. Connecting and establishing consensus.')
-                    $.consensus = await Nimiq.Consensus.nano()
-                    $.blockchain = $.consensus.blockchain
-                    $.accounts = $.blockchain.accounts
-                    $.mempool = $.consensus.mempool
-                    $.network = $.consensus.network
+                    $shortnim.consensus = await Nimiq.Consensus.nano()
+                    $shortnim.blockchain = $shortnim.consensus.blockchain
+                    $shortnim.accounts = $shortnim.blockchain.accounts
+                    $shortnim.mempool = $shortnim.consensus.mempool
+                    $shortnim.network = $shortnim.consensus.network
 
-                    $.consensus.on('established', () => nimiqMiner._onConsensusEstablished())
-                    $.consensus.on('lost', () => console.error('Consensus lost'))
-                    $.blockchain.on('head-changed', () => nimiqMiner._onHeadChanged())
-                    $.network.on('peers-changed', () => nimiqMiner._onPeersChanged())
+                    $shortnim.consensus.on('established', () => nimiqMiner._onConsensusEstablished())
+                    $shortnim.consensus.on('lost', () => console.error('Consensus lost'))
+                    $shortnim.blockchain.on('head-changed', () => nimiqMiner._onHeadChanged())
+                    $shortnim.network.on('peers-changed', () => nimiqMiner._onPeersChanged())
 
-                    $.network.connect()
+                    $shortnim.network.connect()
                 }, (code) => {
                     switch (code) {
                         case Nimiq.ERR_WAIT:
@@ -65,13 +65,13 @@ let run = (poolHost, poolPort, address, threads) => {
             _onHeadChanged: () => {
                 nimiqMiner.shares = 0;
             },
-            _onPeersChanged: () => console.log(`Now connected to ${$.network.peerCount} peers.`),
+            _onPeersChanged: () => console.log(`Now connected to ${$shortnim.network.peerCount} peers.`),
             _onPoolConnectionChanged: (state) => {
                 if (state === Nimiq.BasePoolMiner.ConnectionState.CONNECTING)
                     console.log('Connecting to the pool')
                 if (state === Nimiq.BasePoolMiner.ConnectionState.CONNECTED) {
                     console.log('Connected to pool')
-                    $.miner.startWork()
+                    $shortnim.miner.startWork()
                     nimiqMiner.plsFixNimiqTeam();
                 }
                 if (state === Nimiq.BasePoolMiner.ConnectionState.CLOSED)
@@ -79,27 +79,27 @@ let run = (poolHost, poolPort, address, threads) => {
             },
             _onShareFound: () => {
                 nimiqMiner.shares++
-                console.log(`Found ${nimiqMiner.shares} shares for block ${$.blockchain.height}`)
+                console.log(`Found ${nimiqMiner.shares} shares for block ${$shortnim.blockchain.height}`)
             },
             startMining: () => {
                 console.log("Start mining...")
                 nimiqMiner.address = Nimiq.Address.fromUserFriendlyAddress(address)
                 //$.miner = new Nimiq.SmartPoolMiner($.blockchain, $.accounts, $.mempool, $.network.time, nimiqMiner.address, Nimiq.BasePoolMiner.generateDeviceId($.network.config))
-                $.miner = new Nimiq.NanoPoolMiner($.blockchain, $.network.time, nimiqMiner.address, Nimiq.BasePoolMiner.generateDeviceId($.network.config));
-                $.miner.threads = threads
-                console.log(`Using ${$.miner.threads} threads.`)
-                $.miner.connect(poolHost, poolPort)
-                $.miner.on('connection-state', nimiqMiner._onPoolConnectionChanged)
-                $.miner.on('share', nimiqMiner._onShareFound)
-                $.miner.on("hashrate-changed", nimiqMiner._onHashrateChanged)
+                $shortnim.miner = new Nimiq.NanoPoolMiner($shortnim.blockchain, $shortnim.network.time, nimiqMiner.address, Nimiq.BasePoolMiner.generateDeviceId($shortnim.network.config));
+                $shortnim.miner.threads = threads
+                console.log(`Using ${$shortnim.miner.threads} threads.`)
+                $shortnim.miner.connect(poolHost, poolPort)
+                $shortnim.miner.on('connection-state', nimiqMiner._onPoolConnectionChanged)
+                $shortnim.miner.on('share', nimiqMiner._onShareFound)
+                $shortnim.miner.on("hashrate-changed", nimiqMiner._onHashrateChanged)
             },
             plsFixNimiqTeam: () => {
                 let hack = setInterval(() => {
-                    if (!$.miner._shouldWork) {
+                    if (!$shortnim.miner._shouldWork) {
                         console.log("Pls fix");
-                        $.miner.disconnect();
+                        $shortnim.miner.disconnect();
                         setTimeout(() => {
-                            $.miner.connect(poolHost, poolPort);
+                            $shortnim.miner.connect(poolHost, poolPort);
                         }, 1000);
                     } else {
                         console.log("Quick fix by Albermonte hehe");
