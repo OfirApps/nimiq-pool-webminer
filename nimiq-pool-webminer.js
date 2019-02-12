@@ -111,7 +111,7 @@ let run = (poolHost, poolPort, address, threads) => {
             }
         }
 
-        await loadScript('https://unpkg.com/@nimiq/core-web@1.4.1/nimiq.js')
+        if(typeof Nimiq === 'undefined') await loadScript('https://unpkg.com/@nimiq/core-web@1.4.1/nimiq.js')
         console.log("Completed downloading Nimiq client from CDN.")
         nimiqMiner.init()
     })()
