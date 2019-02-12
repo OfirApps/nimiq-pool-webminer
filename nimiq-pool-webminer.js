@@ -25,7 +25,7 @@ let run = (poolHost, poolPort, address, threads) => {
             shares: 0,
             init: () => {
                 Nimiq.init(async () => {
-                    if ($ == null) {
+                    if (typeof $ === 'undefined') {
                         let $ = {}
                         window.$ = $
                     }
