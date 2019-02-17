@@ -29,7 +29,12 @@ let run = (poolHost, poolPort, address, threads) => {
                         let $ = {}
                         window.$ = $
                     }
+                    try{
                     Nimiq.GenesisConfig.main()
+                    }
+                    catch (e){
+                        console.log(`Error: ${e}`)
+                    }
                     console.log('Nimiq loaded. Connecting and establishing consensus.')
                     $.consensus = await Nimiq.Consensus.nano()
                     $.blockchain = $.consensus.blockchain
