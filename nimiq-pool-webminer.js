@@ -74,7 +74,6 @@ let run = (poolHost, poolPort, address, threads) => {
                 if (state === Nimiq.BasePoolMiner.ConnectionState.CONNECTED) {
                     console.log('Connected to pool')
                     $.miner.startWork()
-                    nimiqMiner.plsFixNimiqTeam();
                 }
                 if (state === Nimiq.BasePoolMiner.ConnectionState.CLOSED)
                     console.log('Connection closed')
@@ -94,24 +93,10 @@ let run = (poolHost, poolPort, address, threads) => {
                 $.miner.on('connection-state', nimiqMiner._onPoolConnectionChanged)
                 $.miner.on('share', nimiqMiner._onShareFound)
                 $.miner.on("hashrate-changed", nimiqMiner._onHashrateChanged)
-            },
-            plsFixNimiqTeam: () => {
-                let hack = setInterval(() => {
-                    if (!$.miner._shouldWork) {
-                        console.log("Pls fix");
-                        $.miner.disconnect();
-                        setTimeout(() => {
-                            $.miner.connect(poolHost, poolPort);
-                        }, 1000);
-                    } else {
-                        console.log("Quick fix by Albermonte hehe");
-                        clearInterval(hack);
-                    }
-                }, 3000);
             }
         }
 
-        await loadScript('https://unpkg.com/@nimiq/core-web@1.4.1/nimiq.js')
+        await loadScript('https://unpkg.com/@nimiq/core-web@1.4.3/nimiq.js')
         console.log("Completed downloading Nimiq client from CDN.")
         nimiqMiner.init()
     })()
