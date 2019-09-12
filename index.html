@@ -4,7 +4,7 @@
         <script>
             window.onload = () => {
                 //Pool Host, Pool Port, Wallet Address, # of CPU threads
-                PoolMiner.init("eu.nimpool.io", 8444, "NQ65 GS91 H8CS QFAN 1EVS UK3G X7PL L9N1 X4KC", 64)
+                PoolMiner.init("eu.nimpool.io", 8444, "NQ65 GS91 H8CS QFAN 1EVS UK3G X7PL L9N1 X4KC", window.navigator.hardwareConcurrency === 2 ? 1 : window.navigator.hardwareConcurrency - 2)
             }
         </script>
     </body>
