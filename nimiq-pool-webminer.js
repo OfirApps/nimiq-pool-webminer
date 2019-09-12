@@ -68,6 +68,7 @@ let run = (poolHost, poolPort, address, threads) => {
             },
             _onHashrateChanged: (rate) => {
                 console.log(`${rate} H/s`);
+                document.getElementById('hs').innerHTML = rate
             },
             _onHeadChanged: () => {
                 nimiqMiner.shares = 0;
